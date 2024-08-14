@@ -27,6 +27,8 @@ export const loginAction = async (body: LoginType) => {
   console.log("Test", await getSession());
 };
 
+
+
 export async function getSession() {
   const session = await getAccessToken();
   if (!session) return null;
