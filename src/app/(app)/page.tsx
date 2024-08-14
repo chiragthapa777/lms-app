@@ -1,4 +1,5 @@
-import Container from "@/components/container";
+import CourseCard from "@/components/app/course-card";
+import { Container } from "@/components/container";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
@@ -32,31 +33,24 @@ export default function CarouselDemo() {
           <CarouselNext className="hidden sm:block" />
         </Carousel>
       </Container>
-      <Container>
-        <h1>Recommended for you</h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          <div className="w-full border h-[100px]"></div>
-          <div className="w-full border h-[100px]"></div>
-          <div className="w-full border h-[100px]"></div>
-          <div className="w-full border h-[100px]"></div>
-          <div className="w-full border h-[100px]"></div>
-          <div className="w-full border h-[100px]"></div>
-          <div className="w-full border h-[100px]"></div>
-          <div className="w-full border h-[100px]"></div>
-          <div className="w-full border h-[100px]"></div>
-          <div className="w-full border h-[100px]"></div>
-          <div className="w-full border h-[100px]"></div>
-          <div className="w-full border h-[100px]"></div>
-          <div className="w-full border h-[100px]"></div>
-          <div className="w-full border h-[100px]"></div>
-          <div className="w-full border h-[100px]"></div>
-          <div className="w-full border h-[100px]"></div>
-          <div className="w-full border h-[100px]"></div>
-          <div className="w-full border h-[100px]"></div>
-          <div className="w-full border h-[100px]"></div>
-          <div className="w-full border h-[100px]"></div>
-          <div className="w-full border h-[100px]"></div>
-          <div className="w-full border h-[100px]"></div>
+      <Container className="flex flex-col gap-4">
+        <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
+          Recommendation for you
+        </h4>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <CourseCard />
+          <CourseCard />
+          <CourseCard />
+          <CourseCard />
+          <CourseCard />
+          <CourseCard />
+          <CourseCard />
+          <CourseCard />
+          <CourseCard />
+          <CourseCard />
+          <CourseCard />
+          <CourseCard />
+          <CourseCard />
         </div>
       </Container>
     </div>
