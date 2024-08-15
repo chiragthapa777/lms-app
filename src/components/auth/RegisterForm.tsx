@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 
+import { registerAction } from "@/actions/auth/auth.action";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,46 +12,49 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import {
+  Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-  Form,
 } from "../ui/form";
-import { useState } from "react";
-import { loginAction } from "@/actions/auth/auth.action";
 
-const loginSchema = z.object({
+const registerSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
   password: z
     .string()
     .min(6, { message: "Password must be at least 6 characters long" }),
+  firstName: z.string(),
+  lastName: z.string(),
 });
 
-export function LoginForm() {
+export function RegisterForm() {
   const [error, setError] = useState<string>("");
-  const form = useForm<z.infer<typeof loginSchema>>({
-    resolver: zodResolver(loginSchema),
+  const form = useForm<z.infer<typeof registerSchema>>({
+    resolver: zodResolver(registerSchema),
     defaultValues: {
       email: "",
       password: "",
+      firstName: "",
+      lastName: "",
     },
   });
 
-  async function onSubmit(values: z.infer<typeof loginSchema>) {
-    const response = await loginAction(values);
+  async function onSubmit(values: z.infer<typeof registerSchema>) {
+    const response = await registerAction(values);
     console.log(values);
   }
   return (
     <Card className="mx-auto max-w-sm">
       <CardHeader>
-        <CardTitle className="text-2xl">Login</CardTitle>
+        <CardTitle className="text-2xl">Register</CardTitle>
         <CardDescription>
-          Enter your email below to login to your account
+          Enter your information below to register to your account
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -72,12 +76,38 @@ export function LoginForm() {
             />
             <FormField
               control={form.control}
+              name="firstName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>First Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Jon Boi" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="lastName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>First Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Doe" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
               name="password"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="******"{...field} />
+                    <Input type="password" placeholder="******" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -87,9 +117,9 @@ export function LoginForm() {
           </form>
         </Form>
         <div className="mt-4 text-center text-sm">
-          Don&apos;t have an account?{" "}
-          <Link href="/register" className="underline">
-            Sign up
+          Already have an account?{" "}
+          <Link href="/login" className="underline">
+            Sign In
           </Link>
         </div>
       </CardContent>
