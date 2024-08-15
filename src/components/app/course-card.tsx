@@ -34,6 +34,7 @@ export default function CourseCard({}: Props) {
           />
           <p className="text-muted-foreground">(1245)</p>
         </div>
+        <h3 className=" text-primary text-sm">Rs 400040</h3>
         <div>
           <Button variant={"outline"} size={"sm"} className="w-full">Enroll</Button>
         </div>

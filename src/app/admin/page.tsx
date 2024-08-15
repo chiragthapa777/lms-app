@@ -1,15 +1,11 @@
-"use client"
+"use client";
 
-import { DollarSign } from "lucide-react"
+import { DollarSign } from "lucide-react";
 
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function Component() {
+  
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -21,5 +17,5 @@ export default function Component() {
         <p className="text-xs text-muted-foreground">+20.1% from last month</p>
       </CardContent>
     </Card>
-  )
+  );
 }

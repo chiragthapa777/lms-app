@@ -23,6 +23,8 @@ import {
 } from "../ui/form";
 import { useState } from "react";
 import { loginAction } from "@/actions/auth/auth.action";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -33,6 +35,7 @@ const loginSchema = z.object({
 
 export function LoginForm() {
   const [error, setError] = useState<string>("");
+  const router = useRouter();
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -42,8 +45,15 @@ export function LoginForm() {
   });
 
   async function onSubmit(values: z.infer<typeof loginSchema>) {
+    setError("");
     const response = await loginAction(values);
-    console.log(values);
+    if (response.data) {
+      toast.success("Login successful");
+      router.push("/login?test=true");
+    } else {
+      setError(response?.error?.message ?? "");
+      toast.error(response.error?.message);
+    }
   }
   return (
     <Card className="mx-auto max-w-sm">
@@ -77,7 +87,7 @@ export function LoginForm() {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="******"{...field} />
+                    <Input type="password" placeholder="******" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

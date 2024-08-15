@@ -1,34 +1,42 @@
-import { getAccessToken } from "@/actions/auth/auth.action";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
-export const fetchProxy = async (url: string, options?: RequestInit) => {
+export async function fetchProxy<T>(
+  url: string,
+  options?: RequestInit
+): Promise<T> {
   try {
     const headers = {
       "Content-type": "application/json",
-      Authorization: "Bearer " + (await getAccessToken()),
+      Authorization: "Bearer " + cookies().get("accessToken")?.value,
       ...(options?.headers ?? {}),
     };
-    console.log(
-      "🚀 ~ fetchProxy ~ headers:",
-      headers,
-      options?.body,
-      options?.method
-    );
+
     const response = await fetch(url, { ...options, headers });
-    const data = await response.json();
+
+    const data: Record<string, any> = await response.json();
+
     const responseCode = response.status;
+
     if (!isSuccessResponseCode(responseCode)) {
-      throw response;
+      if (response.status === 401) {
+        return redirect("/login");
+      }
+      throw data;
     }
 
-    return data;
+    return data as T;
   } catch (error) {
-    console.error(`Fetch Error:`, error);
+    if (error instanceof Error) {
+      throw {
+        message: "Internal Server Error",
+        errors: [],
+      };
+    }
     throw error;
   }
-};
+}
 
 const isSuccessResponseCode = (code: number) => {
   return code >= 200 && code <= 299;
 };
-
-const handleErrorResponse = () => {};

@@ -8,10 +8,12 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import UploadForm from "../admin/upload.test";
 
 export default function CarouselDemo() {
   return (
     <div className="flex flex-col gap-6 p-6">
+      <UploadForm />
       <Container>
         <Carousel className="w-[100%] sm:w-[80%] mx-auto">
           <CarouselContent>
