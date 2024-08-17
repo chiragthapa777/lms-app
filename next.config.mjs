@@ -8,6 +8,18 @@ const nextConfig = {
         port: "",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+        port: "",
+        pathname: "/dnnqnwwsp/**",
+      },
+      {
+        protocol: "https",
+        hostname: "www.pexels.com",
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
 };

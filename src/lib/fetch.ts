@@ -11,7 +11,6 @@ export async function fetchProxy<T>(
       Authorization: "Bearer " + cookies().get("accessToken")?.value,
       ...(options?.headers ?? {}),
     };
-
     const response = await fetch(url, { ...options, headers });
 
     const data: Record<string, any> = await response.json();
@@ -27,6 +26,7 @@ export async function fetchProxy<T>(
 
     return data as T;
   } catch (error) {
+    console.log("🚀 ~ error:", error);
     if (error instanceof Error) {
       throw {
         message: "Internal Server Error",

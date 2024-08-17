@@ -1,3 +1,4 @@
+import { getUserAction } from "@/actions/auth/auth.action";
 import CourseCard from "@/components/app/course-card";
 import { Container } from "@/components/container";
 import { Card, CardContent } from "@/components/ui/card";
@@ -8,12 +9,11 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import UploadForm from "../admin/upload.test";
 
-export default function CarouselDemo() {
+export default async function AppPage() {
+  const getUser = await getUserAction();
   return (
     <div className="flex flex-col gap-6 p-6">
-      <UploadForm />
       <Container>
         <Carousel className="w-[100%] sm:w-[80%] mx-auto">
           <CarouselContent>

@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 
+import { loginAction } from "@/actions/auth/auth.action";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,20 +12,20 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 import {
+  Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-  Form,
 } from "../ui/form";
-import { useState } from "react";
-import { loginAction } from "@/actions/auth/auth.action";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useUserContext } from "@/providers/AuthUserProvider";
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
@@ -35,7 +36,9 @@ const loginSchema = z.object({
 
 export function LoginForm() {
   const [error, setError] = useState<string>("");
+  const { loadUser } = useUserContext();
   const router = useRouter();
+  const query = useSearchParams();
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -49,7 +52,13 @@ export function LoginForm() {
     const response = await loginAction(values);
     if (response.data) {
       toast.success("Login successful");
-      router.push("/login?test=true");
+      loadUser(response.data);
+      const redirectTo = query.get("redirectTo");
+      if (redirectTo) {
+        router.push(redirectTo);
+      } else {
+        router.push("/");
+      }
     } else {
       setError(response?.error?.message ?? "");
       toast.error(response.error?.message);
