@@ -40,6 +40,7 @@ export const createUserAction = async (
         body: JSON.stringify(body),
       }
     );
+
     return { data: response };
   } catch (error) {
     return handleErrorInAction(error);
