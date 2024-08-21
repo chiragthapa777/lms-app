@@ -114,15 +114,14 @@ export default function AppHeader({}: any) {
             <DropdownMenuSeparator />
             {user?.role === ROLE_ENUM.ADMIN ? (
               <>
-                <DropdownMenuLabel
+                <DropdownMenuItem
                   className="capitalize"
                   onClick={() => {
                     router.push("/admin");
                   }}
                 >
                   Admin Dashboard
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
+                </DropdownMenuItem>
               </>
             ) : (
               ""

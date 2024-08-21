@@ -8,4 +8,10 @@ export interface ICourse {
   createdAt: string;
   updatedAt: string;
   deletedAt: any;
+  enrollments: IEnrollment[];
+  chapters: IChapter[];
 }
+
+export interface IEnrollment {}
+
+export interface IChapter {}
