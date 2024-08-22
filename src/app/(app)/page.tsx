@@ -17,19 +17,33 @@ export default async function AppPage() {
       <Container>
         <Carousel className="w-[100%] sm:w-[80%] mx-auto">
           <CarouselContent>
-            {Array.from({ length: 5 }).map((_, index) => (
-              <CarouselItem key={index}>
-                <div className="p-1 ">
-                  <Card>
-                    <CardContent className="flex h-96 items-center justify-center p-6">
-                      <span className="text-4xl font-semibold">
-                        {index + 1}
-                      </span>
-                    </CardContent>
-                  </Card>
-                </div>
-              </CarouselItem>
-            ))}
+            <CarouselItem>
+              <div className="p-1 ">
+                <img
+                  src="/web-banner.jpg"
+                  className="w-full h-full object-cover"
+                  alt=""
+                />
+              </div>
+            </CarouselItem>
+            <CarouselItem>
+              <div className="p-1 ">
+                <img
+                  src="/node-banner.jpg"
+                  className="w-full h-full object-cover"
+                  alt=""
+                />
+              </div>
+            </CarouselItem>
+            <CarouselItem>
+              <div className="p-1 ">
+                <img
+                  src="/react-banner.jpg"
+                  className="w-full h-full object-cover"
+                  alt=""
+                />
+              </div>
+            </CarouselItem>
           </CarouselContent>
           <CarouselPrevious className="hidden sm:block" />
           <CarouselNext className="hidden sm:block" />

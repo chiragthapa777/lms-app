@@ -1,5 +1,6 @@
 export interface ICourse {
   title: string;
+  description: string;
   price: number;
   category: string;
   photoLink: string;

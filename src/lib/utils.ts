@@ -1,6 +1,7 @@
 import { IActionResponse, IApiError } from "@/types/action-return-generic";
 import { type ClassValue, clsx } from "clsx";
 import { jwtDecode } from "jwt-decode";
+import { UseFormSetValue } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -47,4 +48,41 @@ export function objectToQueryString(obj: any): string {
     .join("&");
 
   return query;
+}
+
+export async function handleUploadUtils(
+  e: any,
+  {
+    setUploadingLoading,
+    setValue,
+    fieldName,
+  }: {
+    setUploadingLoading: (args: boolean) => void;
+    setValue: UseFormSetValue<any>;
+    fieldName: string;
+  }
+) {
+  setUploadingLoading(true);
+
+  const formData = new FormData();
+  formData.append("file", e.target.files[0]);
+  formData.append("upload_preset", "course-cloud"); // Replace with your upload preset
+
+  const res = await fetch(
+    `https://api.cloudinary.com/v1_1/dnnqnwwsp/image/upload`,
+    {
+      method: "POST",
+      body: formData,
+    }
+  );
+
+  const data = await res.json();
+
+  if (data.secure_url) {
+    setValue(fieldName, data.secure_url);
+  } else {
+    console.error("Upload failed");
+  }
+
+  setUploadingLoading(false);
 }

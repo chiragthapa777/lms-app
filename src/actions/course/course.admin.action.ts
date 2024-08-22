@@ -7,7 +7,8 @@ import { IActionResponse } from "@/types/action-return-generic";
 import { ICourse } from "@/types/course.type";
 import { IPaginationQuery } from "@/types/pagination.type";
 import { IResponse, IResponsePagination } from "@/types/response-generic";
-import { IUser, ROLE_ENUM } from "@/types/user/user.type";
+import { ROLE_ENUM } from "@/types/user/user.type";
+import { revalidatePath } from "next/cache";
 
 const resourceUrl = baseUrl + "/admin/course";
 
@@ -30,17 +31,70 @@ export const listCourseAction = async (
   }
 };
 
+export const getCourseById = async (
+  id: string
+): Promise<IActionResponse<IResponse<ICourse>>> => {
+  try {
+    const response = await fetchProxy<IResponse<ICourse>>(
+      resourceUrl + "/info/" + id,
+      {
+        method: "get",
+      }
+    );
+    return { data: response };
+  } catch (error) {
+    return handleErrorInAction(error);
+  }
+};
+
 export const createCourseAction = async (
   body: any
 ): Promise<IActionResponse<IResponse<ICourse>>> => {
   try {
-    const response = await fetchProxy<IResponse<IUser>>(
+    const response = await fetchProxy<IResponse<ICourse>>(
       resourceUrl + "/create",
       {
         method: "post",
         body: JSON.stringify(body),
       }
     );
+    revalidatePath("/admin/course");
+    return { data: response };
+  } catch (error) {
+    return handleErrorInAction(error);
+  }
+};
+
+export const updateCourseAction = async (
+  id: number,
+  body: Partial<ICourse>
+): Promise<IActionResponse<IResponse<ICourse>>> => {
+  try {
+    const response = await fetchProxy<IResponse<ICourse>>(
+      resourceUrl + "/update/" + id,
+      {
+        method: "PATCH",
+        body: JSON.stringify(body),
+      }
+    );
+    revalidatePath("/admin/course");
+    return { data: response };
+  } catch (error) {
+    return handleErrorInAction(error);
+  }
+};
+
+export const deleteCourseAction = async (
+  id: number
+): Promise<IActionResponse<IResponse<ICourse>>> => {
+  try {
+    const response = await fetchProxy<IResponse<ICourse>>(
+      resourceUrl + "/delete/" + id,
+      {
+        method: "PATCH",
+      }
+    );
+    revalidatePath("/admin/course");
     return { data: response };
   } catch (error) {
     return handleErrorInAction(error);
