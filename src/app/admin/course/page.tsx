@@ -1,7 +1,10 @@
 import { MoreHorizontal, PlusCircle, Search } from "lucide-react";
-import Image from "next/image";
 
-import { listUserAction } from "@/actions/user/user.admin.action";
+import {
+  deleteCourseAction,
+  listCourseAction,
+} from "@/actions/course/course.admin.action";
+import ImageWrapper from "@/components/ImageWrapper";
 import Loader from "@/components/loader";
 import PaginationFooter from "@/components/PaginationFooter";
 import { Badge } from "@/components/ui/badge";
@@ -25,14 +28,15 @@ import {
 } from "@/components/ui/table";
 import { objectToQueryString } from "@/lib/utils";
 import { IActionResponse } from "@/types/action-return-generic";
+import { ICourse } from "@/types/course.type";
 import { IPaginationQuery } from "@/types/pagination.type";
 import { IResponsePagination } from "@/types/response-generic";
-import { IUser, ROLE_ENUM } from "@/types/user/user.type";
+import { ROLE_ENUM } from "@/types/user/user.type";
 import moment from "moment";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
-import ImageWrapper from "@/components/ImageWrapper";
+import CourseTable from "./_components/CourseTable";
 
 export default function userListPage({
   searchParams,
@@ -47,8 +51,8 @@ export default function userListPage({
     role: searchParams.role ?? undefined,
   };
 
-  const users: Promise<IActionResponse<IResponsePagination<IUser>>> =
-    listUserAction(queryParam);
+  const course: Promise<IActionResponse<IResponsePagination<ICourse>>> =
+    listCourseAction(queryParam);
 
   const setSearch = async (fromData: FormData) => {
     "use server";
@@ -89,75 +93,12 @@ export default function userListPage({
       </div>
 
       <Suspense fallback={<Loader className="border rounded-lg min-h-32" />}>
-        {users.then((response) => {
-          const users = response.data?.data ?? [];
+        {course.then((response) => {
+          const courses = response.data?.data ?? [];
           return (
             <Card>
               <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="hidden w-[100px] sm:table-cell">
-                        <span className="sr-only">Image</span>
-                      </TableHead>
-                      <TableHead>Name</TableHead>
-                      <TableHead>Email</TableHead>
-                      <TableHead>Role</TableHead>
-                      <TableHead>Joined date</TableHead>
-                      <TableHead>
-                        <span className="sr-only">Actions</span>
-                      </TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {users.map((user) => (
-                      <TableRow>
-                        <TableCell className="hidden sm:table-cell">
-                          <ImageWrapper
-                            alt="Product image"
-                            className="aspect-square rounded-md object-cover"
-                            height="64"
-                            src={user.avatar}
-                            width="64"
-                          />
-                        </TableCell>
-                        <TableCell className="font-medium">
-                          {user.name}
-                        </TableCell>
-                        <TableCell className="font-medium">
-                          {user.email}
-                        </TableCell>
-                        <TableCell>
-                          <Badge variant="outline">{user.role}</Badge>
-                        </TableCell>
-                        <TableCell className="hidden md:table-cell">
-                          {moment(user.createdAt).format(
-                            "MMMM Do YYYY, h:mm:ss a"
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button
-                                aria-haspopup="true"
-                                size="icon"
-                                variant="ghost"
-                              >
-                                <MoreHorizontal className="h-4 w-4" />
-                                <span className="sr-only">Toggle menu</span>
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                              <DropdownMenuItem>Edit</DropdownMenuItem>
-                              <DropdownMenuItem>Delete</DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                <CourseTable courses={courses} />
               </CardContent>
               <CardFooter>
                 <PaginationFooter

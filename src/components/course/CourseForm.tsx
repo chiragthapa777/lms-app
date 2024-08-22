@@ -1,12 +1,29 @@
 "use client";
-import { createUserAction } from "@/actions/user/user.admin.action";
+import {
+  createCourseAction,
+  updateCourseAction,
+} from "@/actions/course/course.admin.action";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { categories } from "@/constants/cateogory.constant";
+import { handleUploadUtils } from "@/lib/utils";
+import { ChapterSchema } from "@/schemas/chapter.schema";
+import { ICourse } from "@/types/course.type";
+import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import Loader from "../loader";
+import RichTextEditor from "../text-editor";
 import { Button } from "../ui/button";
 import {
   Form,
@@ -17,19 +34,10 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
-import Loader from "../loader";
-import { ChapterSchema } from "@/schemas/chapter.schema";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
-type Props = {};
+type Props = { course?: ICourse };
 
-export default function CourseForm({}: Props) {
+export default function CourseForm({ course }: Props) {
   const form = useForm<z.infer<typeof ChapterSchema>>({
     resolver: zodResolver(ChapterSchema),
     mode: "all",
@@ -42,53 +50,94 @@ export default function CourseForm({}: Props) {
     },
   });
   const [uploadLoading, setUploadingLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
-
   const { setValue, getValues } = form;
 
-  const handleUpload = async (e: any) => {
-    setUploadingLoading(true);
-
-    const formData = new FormData();
-    formData.append("file", e.target.files[0]);
-    formData.append("upload_preset", "course-cloud"); // Replace with your upload preset
-
-    const res = await fetch(
-      `https://api.cloudinary.com/v1_1/dnnqnwwsp/image/upload`,
-      {
-        method: "POST",
-        body: formData,
-      }
-    );
-
-    const data = await res.json();
-
-    if (data.secure_url) {
-      setValue("photoLink", data.secure_url);
-    } else {
-      console.error("Upload failed");
+  useEffect(() => {
+    if (course) {
+      patchFormValue();
     }
+  }, []);
 
-    setUploadingLoading(false);
+  const patchFormValue = () => {
+    if (course) {
+      setValue("category", course.category, {
+        shouldValidate: true,
+        shouldDirty: false,
+        shouldTouch: false,
+      });
+      setValue("description", course.description, {
+        shouldValidate: true,
+        shouldDirty: false,
+        shouldTouch: false,
+      });
+      setValue("photoLink", course.photoLink, {
+        shouldValidate: true,
+        shouldDirty: false,
+        shouldTouch: false,
+      });
+      setValue("price", course.price, {
+        shouldValidate: true,
+        shouldDirty: false,
+        shouldTouch: false,
+      });
+      setValue("title", course.title, {
+        shouldValidate: true,
+        shouldDirty: false,
+        shouldTouch: false,
+      });
+    }
+  };
+  console.log(form)
+
+  const handleUpload = async (e: any) => {
+    await handleUploadUtils(e, {
+      setUploadingLoading,
+      setValue,
+      fieldName: "photoLink",
+    });
   };
 
-  async function onSubmit(values: z.infer<typeof ChapterSchema>) {
-    const body: any = {
-      ...values,
-      confirmPassword: undefined,
-    };
-    const response = await createUserAction(body);
+  async function createCourse(body: any) {
+    const response = await createCourseAction(body);
     if (response.data) {
-      toast.success("Admin created successfully");
-      router.push("/admin/user");
+      toast.success("course created successfully");
+      router.push("/admin/course");
     } else {
       toast.error(response?.error?.message);
     }
   }
 
+  async function updateCourse(body: any) {
+    if (course?.id) {
+      const response = await updateCourseAction(course.id, body);
+      if (response.data) {
+        toast.success("course updated successfully");
+        router.push("/admin/course");
+      } else {
+        toast.error(response?.error?.message);
+      }
+    }
+  }
+
+  async function onSubmit(values: z.infer<typeof ChapterSchema>) {
+    setLoading(true);
+    const body: any = {
+      ...values,
+    };
+    if (!course) {
+      await createCourse(body);
+    } else {
+      updateCourse(body);
+    }
+    setLoading(false);
+  }
+
   return (
     <div>
       <Form {...form}>
+        <DevTool control={form.control} />
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <div className="col-span-2 flex flex-col gap-4">
             <FormField
@@ -139,6 +188,21 @@ export default function CourseForm({}: Props) {
 
             <FormField
               control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <div>
+                      <RichTextEditor {...field} />
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
               name="category"
               render={({ field }) => (
                 <FormItem>
@@ -153,13 +217,15 @@ export default function CourseForm({}: Props) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="m@example.com">
-                        m@example.com
-                      </SelectItem>
-                      <SelectItem value="m@google.com">m@google.com</SelectItem>
-                      <SelectItem value="m@support.com">
-                        m@support.com
-                      </SelectItem>
+                      {categories.map((item) => (
+                        <SelectItem
+                          value={item}
+                          key={item}
+                          className="capitalize"
+                        >
+                          {item}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -171,9 +237,9 @@ export default function CourseForm({}: Props) {
               name="price"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>Price</FormLabel>
                   <FormControl>
-                    <Input type="number" {...field} />
+                    <Input type="text" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -181,7 +247,12 @@ export default function CourseForm({}: Props) {
             />
           </div>
 
-          <Button type="submit">Submit</Button>
+          <Button
+            type="submit"
+            disabled={loading || uploadLoading || !form.formState.isValid}
+          >
+            {course?.id ? "Save" : "Create"}
+          </Button>
         </form>
       </Form>
     </div>
