@@ -56,10 +56,12 @@ export async function handleUploadUtils(
     setUploadingLoading,
     setValue,
     fieldName,
+    isVideo = false,
   }: {
     setUploadingLoading: (args: boolean) => void;
     setValue: UseFormSetValue<any>;
     fieldName: string;
+    isVideo?: boolean;
   }
 ) {
   setUploadingLoading(true);
@@ -69,7 +71,9 @@ export async function handleUploadUtils(
   formData.append("upload_preset", "course-cloud"); // Replace with your upload preset
 
   const res = await fetch(
-    `https://api.cloudinary.com/v1_1/dnnqnwwsp/image/upload`,
+    `https://api.cloudinary.com/v1_1/dnnqnwwsp/${
+      isVideo ? "video" : "image"
+    }/upload`,
     {
       method: "POST",
       body: formData,

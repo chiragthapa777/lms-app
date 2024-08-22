@@ -15,4 +15,14 @@ export interface ICourse {
 
 export interface IEnrollment {}
 
-export interface IChapter {}
+export interface IChapter {
+  title: string;
+  content: string;
+  courseId: number;
+  videoLink: number;
+  index: number;
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt?: string | null;
+}

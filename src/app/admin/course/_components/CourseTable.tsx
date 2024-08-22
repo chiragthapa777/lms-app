@@ -45,6 +45,8 @@ export default function CourseTable({ courses }: Props) {
           <TableHead>Title</TableHead>
           <TableHead>Category</TableHead>
           <TableHead>Price</TableHead>
+          <TableHead>Chapters</TableHead>
+          <TableHead>Enrollments</TableHead>
           <TableHead>Created At</TableHead>
           <TableHead>
             <span className="sr-only">Actions</span>
@@ -63,11 +65,20 @@ export default function CourseTable({ courses }: Props) {
                 width="64"
               />
             </TableCell>
-            <TableCell className="font-medium">{course.title}</TableCell>
+            <TableCell className="font-medium underline text-blue-700 hover:cursor-pointer">
+              <Link href={`/admin/course/${course.id}`}>{course.title}</Link>
+            </TableCell>
             <TableCell>
               <Badge variant="outline">{course.category}</Badge>
             </TableCell>
             <TableCell className="font-medium">Rs. {course.price}</TableCell>
+            <TableCell className="font-medium">
+              {course.chapters.length}
+            </TableCell>
+            <TableCell className="font-medium">
+              {" "}
+              {course.enrollments.length}
+            </TableCell>
             <TableCell className="hidden md:table-cell">
               {moment(course.createdAt).format("MMMM Do YYYY")}
             </TableCell>
@@ -83,6 +94,9 @@ export default function CourseTable({ courses }: Props) {
                   <DropdownMenuLabel>Actions</DropdownMenuLabel>
                   <DropdownMenuItem>
                     <Link href={"/admin/course/edit/" + course.id}>Edit</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link href={"/admin/chapter/edit/" + course.id}>Edit</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => handleDelete(course.id)}>
                     Delete

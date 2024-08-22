@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useUserContext } from "@/providers/AuthUserProvider";
-import { ROLE_ENUM } from "@/types/user/user.type";
+import { IUser, ROLE_ENUM } from "@/types/user/user.type";
 import { CircleUser, Menu, Package2, Search } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -23,7 +23,7 @@ const navItems = [
   { href: "/my-review", label: "My Reviews" },
 ];
 export default function AppHeader({}: any) {
-  const { user, setUser } = useUserContext();
+  const { user, setUser }: { user?: IUser; setUser: any } = useUserContext();
   const router = useRouter();
   const pathname = usePathname();
 
@@ -103,7 +103,12 @@ export default function AppHeader({}: any) {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="secondary" size="icon" className="rounded-full">
-              <CircleUser className="h-5 w-5" />
+              {user?.avatar ? (
+                <img src={user.avatar} className="h-full w-full rounded-full object-cover" />
+              ) : (
+                <CircleUser className="h-5 w-5" />
+              )}
+
               <span className="sr-only">Toggle user menu</span>
             </Button>
           </DropdownMenuTrigger>

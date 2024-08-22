@@ -12,9 +12,7 @@ import {
 } from "@/components/ui/select";
 import { categories } from "@/constants/cateogory.constant";
 import { handleUploadUtils } from "@/lib/utils";
-import { ChapterSchema } from "@/schemas/chapter.schema";
 import { ICourse } from "@/types/course.type";
-import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -34,12 +32,13 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
+import { CourseSchema } from "@/schemas/course.schema";
 
 type Props = { course?: ICourse };
 
 export default function CourseForm({ course }: Props) {
-  const form = useForm<z.infer<typeof ChapterSchema>>({
-    resolver: zodResolver(ChapterSchema),
+  const form = useForm<z.infer<typeof CourseSchema>>({
+    resolver: zodResolver(CourseSchema),
     mode: "all",
     defaultValues: {
       title: undefined,
@@ -89,7 +88,7 @@ export default function CourseForm({ course }: Props) {
       });
     }
   };
-  console.log(form)
+  console.log(form);
 
   const handleUpload = async (e: any) => {
     await handleUploadUtils(e, {
@@ -121,7 +120,7 @@ export default function CourseForm({ course }: Props) {
     }
   }
 
-  async function onSubmit(values: z.infer<typeof ChapterSchema>) {
+  async function onSubmit(values: z.infer<typeof CourseSchema>) {
     setLoading(true);
     const body: any = {
       ...values,
@@ -137,7 +136,7 @@ export default function CourseForm({ course }: Props) {
   return (
     <div>
       <Form {...form}>
-        <DevTool control={form.control} />
+        {/* <DevTool control={form.control} /> */}
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <div className="col-span-2 flex flex-col gap-4">
             <FormField
