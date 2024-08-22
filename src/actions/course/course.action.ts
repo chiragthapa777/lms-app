@@ -7,7 +7,6 @@ import { IActionResponse } from "@/types/action-return-generic";
 import { ICourse } from "@/types/course.type";
 import { IPaginationQuery } from "@/types/pagination.type";
 import { IResponse, IResponsePagination } from "@/types/response-generic";
-import { ROLE_ENUM } from "@/types/user/user.type";
 
 const resourceUrl = baseUrl + "/course";
 
