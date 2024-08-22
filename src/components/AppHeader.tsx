@@ -108,9 +108,11 @@ export default function AppHeader({}: any) {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel className="capitalize">
-              {user?.name ? user.name : "My Account"}
-            </DropdownMenuLabel>
+            <Link href="/account">
+              <DropdownMenuLabel className="capitalize cursor-pointer">
+                {user?.name ? user.name : "My Account"}
+              </DropdownMenuLabel>
+            </Link>
             <DropdownMenuSeparator />
             {user?.role === ROLE_ENUM.ADMIN ? (
               <>
