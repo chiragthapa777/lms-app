@@ -20,7 +20,7 @@ export const listUserAction = async (
       resourceUrl + "/list?" + objectToQueryString(query),
       {
         method: "get",
-        cache: "no-cache",
+        cache: "no-store",
       }
     );
     return { data: response };

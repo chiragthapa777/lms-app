@@ -18,7 +18,7 @@ export const listCourseActionUser = async (
       resourceUrl + "/list?" + objectToQueryString(query),
       {
         method: "get",
-        cache: "no-cache",
+        cache: "no-store",
       }
     );
     return { data: response };
@@ -35,6 +35,7 @@ export const getCourseByIdUser = async (
       resourceUrl + "/info/" + id,
       {
         method: "get",
+        cache:'no-store'
       }
     );
     return { data: response };

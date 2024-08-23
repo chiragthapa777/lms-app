@@ -22,7 +22,7 @@ export const listChapterAction = async (
       resourceUrl + "/list?" + objectToQueryString(query),
       {
         method: "get",
-        cache: "no-cache",
+        cache: "no-store",
       }
     );
     return { data: response };
@@ -39,6 +39,7 @@ export const getChapterById = async (
       resourceUrl + "/info/" + id,
       {
         method: "get",
+        cache:'no-store'
       }
     );
     return { data: response };
