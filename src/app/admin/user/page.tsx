@@ -111,7 +111,7 @@ export default function userListPage({
                   </TableHeader>
                   <TableBody>
                     {users.map((user) => (
-                      <TableRow>
+                      <TableRow key={user.id}>
                         <TableCell className="hidden sm:table-cell">
                           <ImageWrapper
                             alt="Product image"

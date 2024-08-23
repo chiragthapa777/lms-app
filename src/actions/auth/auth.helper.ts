@@ -17,7 +17,7 @@ export const getMeAction = async (): Promise<
         Test: (await getAccessToken()) as string,
       },
       method: "get",
-      cache: "no-cache",
+      cache: "no-store",
     });
     return { data };
   } catch (error) {

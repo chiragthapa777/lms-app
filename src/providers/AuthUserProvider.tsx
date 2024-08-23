@@ -10,18 +10,19 @@ export function UserContextProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [user, setUserState] = useState<null | IUser>(
-    localStorage.getItem("user")
-      ? JSON.parse(localStorage.getItem("user") as string)
-      : null
-  );
+  const [user, setUserState] = useState<null | IUser>(null);
 
   const setUser = (user: any) => {
-    localStorage.setItem("user", user ? JSON.stringify(user) : "");
+    window.localStorage.setItem("user", user ? JSON.stringify(user) : "");
     setUserState(user);
   };
 
   useEffect(() => {
+    setUserState(
+      window.localStorage.getItem("user")
+        ? JSON.parse(window.localStorage.getItem("user") as string)
+        : null
+    );
     loadUser();
   }, []);
 

@@ -7,7 +7,6 @@ import { Suspense } from "react";
 type Props = { params: { courseId?: number; id: number } };
 
 export default async function page({ params }: Props) {
-  console.log(params);
   if (params?.courseId) {
     const chapter = getChapterById(Number(params.courseId));
     return (

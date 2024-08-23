@@ -93,9 +93,6 @@ export default function CourseTable({ courses }: Props) {
                 <DropdownMenuContent align="end">
                   <DropdownMenuLabel>Actions</DropdownMenuLabel>
                   <DropdownMenuItem>
-                    <Link href={"/admin/course/edit/" + course.id}>Edit</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
                     <Link href={"/admin/chapter/edit/" + course.id}>Edit</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => handleDelete(course.id)}>

@@ -56,7 +56,6 @@ export async function getUserAction(): Promise<any | null> {
 }
 
 export const registerAction = async (body: RegisterType) => {
-  console.log("This is Body in Register: ", body);
 };
 export const logoutAction = async () => {
   cookies().set("accessToken", "", {

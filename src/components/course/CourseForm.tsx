@@ -88,7 +88,6 @@ export default function CourseForm({ course }: Props) {
       });
     }
   };
-  console.log(form);
 
   const handleUpload = async (e: any) => {
     await handleUploadUtils(e, {

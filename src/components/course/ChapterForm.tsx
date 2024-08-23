@@ -46,8 +46,6 @@ export default function ChapterForm({ chapter, courseId }: Props) {
   const router = useRouter();
   const { setValue, getValues } = form;
 
-  console.log(form);
-
   const handleUpload = async (e: any) => {
     await handleUploadUtils(e, {
       setUploadingLoading,

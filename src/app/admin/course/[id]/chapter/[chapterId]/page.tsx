@@ -15,7 +15,6 @@ export default async function page({ params }: Props) {
       </p>
       <Suspense fallback={<Loader className=" rounded-lg min-h-32" />}>
         {chapter.then((data) => {
-          console.log("🚀 ~ {chapter.then ~ data:", data);
           return (
             <ChapterForm
               chapter={data.data?.data as IChapter}

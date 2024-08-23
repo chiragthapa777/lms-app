@@ -26,7 +26,6 @@ export async function fetchProxy<T>(
 
     return data as T;
   } catch (error) {
-    console.log("🚀 ~ error:", error);
     if (error instanceof Error) {
       throw {
         message: "Internal Server Error",
