@@ -47,6 +47,7 @@ export const listCourseEnrolledActionUser = async (
 export const getCourseByIdUser = async (
   id: string
 ): Promise<IActionResponse<IResponse<ICourse>>> => {
+  console.log("🚀 ~ id:666666666666666666...........................................................", id);
   try {
     const response = await fetchProxy<IResponse<ICourse>>(
       resourceUrl + "/info/" + id,

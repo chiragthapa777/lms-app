@@ -57,6 +57,9 @@ export default async function AppPage() {
         </h4>
         <Suspense fallback={<Loader className=" rounded-lg min-h-32" />}>
           {courses.then((response) => {
+            if(response.error){
+              throw new Error(response.error?.message)
+            }
             const courses = response.data?.data ?? [];
             return (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-10">

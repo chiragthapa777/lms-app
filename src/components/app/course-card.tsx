@@ -25,9 +25,9 @@ export default function CourseCard({ course, href }: Props) {
         <h3 className=" text-primary text-sm">{course.title}</h3>
         <div className="text-sm text-muted-foreground">{course.category}</div>
         <div className="flex text-xs gap-1">
-          <p>4.4</p>
+          <p>{course.rating}</p>
           <Ratings
-            value={rating}
+            value={course.rating}
             variant="destructive"
             size={13}
             asInput={true}

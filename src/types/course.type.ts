@@ -20,16 +20,28 @@ export interface IEnrollment {
   rating: number;
   review: string;
   user: IUser;
+  userId: number;
 }
 
 export interface IChapter {
   title: string;
   content: string;
   courseId: number;
-  videoLink: number;
+  videoLink: string;
   index: number;
   id: number;
   createdAt: string;
   updatedAt: string;
   deletedAt?: string | null;
+  notes: INote[];
+}
+
+export interface INote {
+  title?: string;
+
+  userId?: number;
+
+  chapterId?: number;
+
+  content?: string;
 }
