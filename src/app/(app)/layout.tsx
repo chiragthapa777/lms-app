@@ -6,9 +6,12 @@ export default async function AppLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex min-h-screen w-full flex-col">
+    <div className="flex min-h-screen flex-col">
       <AppHeader />
-      <main className="h-full w-full">{children}</main>
+      <main className="grow min-h-1">{children}</main>
+      <footer className="border-t mt-4 p-4 text-center text-sm text-gray-600">
+        © 2024 CloudCourse™. All rights reserved.
+      </footer>{" "}
     </div>
   );
 }

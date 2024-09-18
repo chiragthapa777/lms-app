@@ -90,3 +90,12 @@ export async function handleUploadUtils(
 
   setUploadingLoading(false);
 }
+
+export const getNameShortForm = (name: string): string => {
+  const arr = name.split(" ");
+  const shortForm: string = arr
+    .map((word) => word[0])
+    .join("")
+    .toUpperCase();
+  return shortForm;
+};

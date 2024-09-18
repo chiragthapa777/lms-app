@@ -4,13 +4,14 @@ import Image from "next/image";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import Ratings from "./rating";
+import Link from "next/link";
 
 type Props = { course: ICourse };
 
 export default function CourseCard({ course }: Props) {
   const [rating, setRating] = useState(3);
   return (
-    <div className="flex flex-col gap-2">
+    <Link href={`course/${course.id}`} className="flex flex-col gap-2">
       <div className="img">
         <Image
           src={course.photoLink}
@@ -41,6 +42,6 @@ export default function CourseCard({ course }: Props) {
           </Button>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

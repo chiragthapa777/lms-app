@@ -5,11 +5,6 @@ import {
   User,
 } from "lucide-react";
 
-import AdminHeader from "@/components/admin-header";
-import AdminHeaderDrawer from "@/components/admin-header-drawer";
-import { Container } from "@/components/container";
-import { adminGuard } from "@/guards/admin.guard";
-
 const navigation = [
   {
     link: "/admin",

@@ -1,3 +1,5 @@
+import { IUser } from "./user/user.type";
+
 export interface ICourse {
   title: string;
   description: string;
@@ -13,7 +15,12 @@ export interface ICourse {
   chapters: IChapter[];
 }
 
-export interface IEnrollment {}
+export interface IEnrollment {
+  id: number;
+  rating: number;
+  review: string;
+  user: IUser;
+}
 
 export interface IChapter {
   title: string;

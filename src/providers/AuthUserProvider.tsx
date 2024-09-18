@@ -1,7 +1,7 @@
 "use client";
 import { getUserAction } from "@/actions/auth/auth.action";
 import { IUser } from "@/types/user/user.type";
-import React, { useContext, useEffect, useState } from "react";
+import React, { use, useContext, useEffect, useState } from "react";
 
 const UserContext = React.createContext({});
 
@@ -44,7 +44,15 @@ export function UserContextProvider({
   );
 }
 
-export const useUserContext = (): any => {
+export const useUserContext = (): {
+  user: IUser;
+  setUser: any;
+  loadUser: any;
+} => {
   const user = useContext(UserContext);
-  return user;
+  return user as {
+    user: IUser;
+    setUser: any;
+    loadUser: any;
+  };
 };

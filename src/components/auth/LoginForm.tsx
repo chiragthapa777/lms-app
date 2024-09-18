@@ -54,11 +54,11 @@ export function LoginForm() {
       toast.success("Login successful");
       loadUser(response.data);
       const redirectTo = query.get("redirectTo");
-      if (redirectTo) {
-        router.push(redirectTo);
-      } else {
-        router.push("/");
-      }
+      // if (redirectTo) {
+      //   router.push(redirectTo);
+      // } else {
+      router.push("/");
+      // }
     } else {
       setError(response?.error?.message ?? "");
       toast.error(response.error?.message);
@@ -102,7 +102,9 @@ export function LoginForm() {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full">Submit</Button>
+            <Button type="submit" className="w-full">
+              Submit
+            </Button>
           </form>
         </Form>
         <div className="mt-4 text-center text-sm">

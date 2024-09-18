@@ -16,6 +16,7 @@ import { IUser, ROLE_ENUM } from "@/types/user/user.type";
 import { CircleUser, Menu, Package2, Search } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { FormEvent, useState } from "react";
 import { toast } from "sonner";
 const navItems = [
   { href: "/", label: "Home" },
@@ -24,6 +25,7 @@ const navItems = [
 ];
 export default function AppHeader({}: any) {
   const { user, setUser }: { user?: IUser; setUser: any } = useUserContext();
+  const [search, setSearch] = useState("");
   const router = useRouter();
   const pathname = usePathname();
 
@@ -34,6 +36,13 @@ export default function AppHeader({}: any) {
       toast.success("Logged out");
     } else {
       router.push("/login");
+    }
+  };
+
+  const handleSearch = (e: FormEvent) => {
+    e.preventDefault();
+    if (search) {
+      return router.push("/course?search=" + search);
     }
   };
 
@@ -90,13 +99,19 @@ export default function AppHeader({}: any) {
         </SheetContent>
       </Sheet>
       <div className="flex w-full md:w-auto items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
-        <form className="ml-auto flex-1 sm:flex-initial">
+        <form
+          className="ml-auto flex-1 sm:flex-initial"
+          onSubmit={handleSearch}
+        >
           <div className="relative">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               type="search"
               placeholder="Search products..."
               className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
+              onChange={(e) => {
+                setSearch(e.target.value);
+              }}
             />
           </div>
         </form>
@@ -104,7 +119,10 @@ export default function AppHeader({}: any) {
           <DropdownMenuTrigger asChild>
             <Button variant="secondary" size="icon" className="rounded-full">
               {user?.avatar ? (
-                <img src={user.avatar} className="h-full w-full rounded-full object-cover" />
+                <img
+                  src={user.avatar}
+                  className="h-full w-full rounded-full object-cover"
+                />
               ) : (
                 <CircleUser className="h-5 w-5" />
               )}
