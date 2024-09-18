@@ -27,6 +27,23 @@ export const listCourseActionUser = async (
   }
 };
 
+export const listCourseEnrolledActionUser = async (
+  query: {} & IPaginationQuery
+): Promise<IActionResponse<IResponsePagination<ICourse> | any>> => {
+  try {
+    const response = await fetchProxy<IResponsePagination<ICourse>>(
+      resourceUrl + "/enrolled?" + objectToQueryString(query),
+      {
+        method: "get",
+        cache: "no-store",
+      }
+    );
+    return { data: response };
+  } catch (error) {
+    return handleErrorInAction(error);
+  }
+};
+
 export const getCourseByIdUser = async (
   id: string
 ): Promise<IActionResponse<IResponse<ICourse>>> => {
@@ -35,7 +52,7 @@ export const getCourseByIdUser = async (
       resourceUrl + "/info/" + id,
       {
         method: "get",
-        cache:'no-store'
+        cache: "no-store",
       }
     );
     return { data: response };

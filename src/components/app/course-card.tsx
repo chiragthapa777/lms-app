@@ -6,12 +6,12 @@ import { Button } from "../ui/button";
 import Ratings from "./rating";
 import Link from "next/link";
 
-type Props = { course: ICourse };
+type Props = { course: ICourse; href?: string };
 
-export default function CourseCard({ course }: Props) {
+export default function CourseCard({ course, href }: Props) {
   const [rating, setRating] = useState(3);
   return (
-    <Link href={`course/${course.id}`} className="flex flex-col gap-2">
+    <Link href={href ?? `course/${course.id}`} className="flex flex-col gap-2">
       <div className="img">
         <Image
           src={course.photoLink}
