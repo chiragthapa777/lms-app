@@ -11,7 +11,7 @@ type Props = {
   };
 };
 
-export default function page(data: Props) {
+export default function Page(data: Props) {
   const [error, setError] = useState("");
   const [courseId, setCourseId] = useState("");
   const router = useRouter();
