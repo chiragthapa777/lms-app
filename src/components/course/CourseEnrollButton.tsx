@@ -10,7 +10,7 @@ import {
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle
+  DialogTitle,
 } from "@/components/ui/dialog";
 import { esewaImgUrl } from "@/constants/app.constant";
 import { useUserContext } from "@/providers/AuthUserProvider";
@@ -41,10 +41,10 @@ export default function CourseEnrollButton({ course, defaultOpen }: Props) {
       if (data.data) {
         var form = document.createElement("form");
         form.setAttribute("method", "POST");
-        form.setAttribute("action", data.data.url);
+        form.setAttribute("action", data.data.url?.toString());
 
         for (var key in data.data) {
-          const val: string = data.data[key] as unknown as string;
+          const val: any = data?.data[key];
           if (key === "url") continue;
           var hiddenField = document.createElement("input");
           hiddenField.setAttribute("type", "hidden");

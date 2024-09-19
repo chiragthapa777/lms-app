@@ -32,7 +32,7 @@ export const createPaymentUserAction = async (body: {
 
 export const getPaymentDetail = async (
   course: ICourse
-): Promise<IActionResponse<paymentFormData>> => {
+): Promise<IActionResponse<Record<string, string|number>>> => {
   const user = await getUserAction();
   const uuid = `${course.id}_${user.id}_` + crypto.randomUUID();
   const data = `total_amount=${
