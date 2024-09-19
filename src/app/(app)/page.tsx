@@ -10,9 +10,11 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { ICourse } from "@/types/course.type";
+import { cookies } from "next/headers";
 import { Suspense } from "react";
 
 export default async function AppPage() {
+  console.log(cookies().get("accessToken")?.value);
   const courses = listCourseActionUser({});
   return (
     <div className="flex flex-col gap-6 p-6">
@@ -57,8 +59,8 @@ export default async function AppPage() {
         </h4>
         <Suspense fallback={<Loader className=" rounded-lg min-h-32" />}>
           {courses.then((response) => {
-            if(response.error){
-              throw new Error(response.error?.message)
+            if (response.error) {
+              throw new Error(response.error?.message);
             }
             const courses = response.data?.data ?? [];
             return (
