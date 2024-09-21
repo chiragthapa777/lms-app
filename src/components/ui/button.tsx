@@ -71,6 +71,7 @@ const ButtonWithLoading = React.forwardRef<
     </Button>
   );
 });
+ButtonWithLoading.displayName = "ButtonWithLoading"
 Button.displayName = "Button";
 
 export { Button, buttonVariants, ButtonWithLoading };

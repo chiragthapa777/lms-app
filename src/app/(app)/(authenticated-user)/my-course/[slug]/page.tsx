@@ -92,7 +92,7 @@ export default function Page({
           <div className="col-span-12 md:col-span-9 flex flex-col gap-2">
             <div className="mt-2 mx-2 flex justify-between items-center">
               <h1 className="text-xl font-semibold ">{course?.title} </h1>
-              {userEnrollment?.rating ? "" : <AddReview course={course} />}
+               <AddReview course={course} />
             </div>
 
             <div className="min-h-[240px]">

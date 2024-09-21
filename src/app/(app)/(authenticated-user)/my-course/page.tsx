@@ -1,4 +1,4 @@
-import { listCourseActionUser } from "@/actions/course/course.action";
+import { listCourseEnrolledActionUser, listRecommendedCourseActionUser } from "@/actions/course/course.action";
 import CourseCard from "@/components/app/course-card";
 import { Container } from "@/components/container";
 import Loader from "@/components/loader";
@@ -8,12 +8,12 @@ import { Suspense } from "react";
 type Props = {};
 
 export default function page({}: Props) {
-  const courses = listCourseActionUser({});
+  const courses = listCourseEnrolledActionUser({});
   return (
     <div className="flex flex-col gap-6 p-6">
       <Container className="flex flex-col gap-4">
         <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
-          You courses
+          Your courses
         </h4>
         <Suspense fallback={<Loader className=" rounded-lg min-h-32" />}>
           {courses.then((response) => {
