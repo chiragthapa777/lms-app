@@ -14,7 +14,7 @@ import { cookies } from "next/headers";
 import { Suspense } from "react";
 
 export default async function AppPage() {
-  console.log(cookies().get("accessToken")?.value);
+  cookies().get("test");
   const courses = listRecommendedCourseActionUser({});
   return (
     <div className="flex flex-col gap-6 p-6">
