@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dialog";
 import { esewaImgUrl } from "@/constants/app.constant";
 import { useUserContext } from "@/providers/AuthUserProvider";
+import { ROLE_ENUM } from "@/types/user/user.type";
 import { useRouter } from "next/navigation";
 
 type Props = { course: ICourse; defaultOpen?: boolean };
@@ -26,16 +27,19 @@ export default function CourseEnrollButton({ course, defaultOpen }: Props) {
   useEffect(() => {}, [open]);
 
   const isEnroll = useMemo(() => {
-    return !course.enrollments.find((e) => e.user.id === user.id);
+    return !course.enrollments.find((e) => user?.id && e.user.id === user.id);
   }, [course.id]);
 
   const processPayment = async () => {
+    if (!user || user.role !== ROLE_ENUM.USER) {
+      router.push("/login");
+      return;
+    }
     setLoading(true);
 
     try {
       // Fetch payment details
       const data = await getPaymentDetail(course);
-      console.log("🚀 ~ processPayment ~ data:", data);
 
       // Check if data contains the necessary fields
       if (data.data) {
@@ -67,7 +71,7 @@ export default function CourseEnrollButton({ course, defaultOpen }: Props) {
     if (isEnroll) {
       setOpen(true);
     } else {
-      router.push("/my-course");
+      router.push("/my-course/" + course.id?.toString());
     }
   };
 

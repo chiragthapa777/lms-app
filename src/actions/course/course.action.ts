@@ -27,6 +27,23 @@ export const listCourseActionUser = async (
   }
 };
 
+export const listRecommendedCourseActionUser = async (
+  query: {} & IPaginationQuery
+): Promise<IActionResponse<IResponsePagination<ICourse> | any>> => {
+  try {
+    const response = await fetchProxy<IResponsePagination<ICourse>>(
+      resourceUrl + "/recommend?" + objectToQueryString(query),
+      {
+        method: "get",
+        cache: "no-store",
+      }
+    );
+    return { data: response };
+  } catch (error) {
+    return handleErrorInAction(error);
+  }
+};
+
 export const listCourseEnrolledActionUser = async (
   query: {} & IPaginationQuery
 ): Promise<IActionResponse<IResponsePagination<ICourse> | any>> => {

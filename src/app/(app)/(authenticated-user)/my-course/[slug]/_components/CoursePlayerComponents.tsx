@@ -1,16 +1,106 @@
 "use client";
 
 import Viewer from "@/components/rich-text/viewer";
-import { Button } from "@/components/ui/button";
+import { Button, ButtonWithLoading } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
+import { rateByUserAction } from "@/actions/enrollment/user.action";
+import Ratings from "@/components/app/rating";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
+import { useUserContext } from "@/providers/AuthUserProvider";
 import { IChapter, ICourse } from "@/types/course.type";
 import { ListVideo, Play } from "lucide-react";
+import { useMemo, useState } from "react";
+import { toast } from "sonner";
+import NoteView from "./NoteView";
+
+export function AddReview({ course }: { course: ICourse }) {
+  const { user } = useUserContext();
+  const userEnrollment = useMemo(
+    () => course.enrollments.find((e) => e.userId === user.id),
+    [course, user]
+  );
+  const [rating, setRating] = useState(userEnrollment?.rating ?? 0);
+  const [review, setReview] = useState(userEnrollment?.review ?? "");
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [error, setError] = useState("");
+  const handleAddReview = async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const body = { review, rating };
+      const response = await rateByUserAction(body, course.id);
+      if (response.error) {
+        throw new Error(response.error.message);
+      }
+      toast.success("Review added successfully");
+      setOpen(false);
+    } catch (error) {
+      setError(error instanceof Error ? error.message : (error as string));
+    } finally {
+      setLoading(false);
+    }
+  };
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <Button
+        onClick={() => {
+          setOpen(true);
+        }}
+        size={"xs"}
+      >
+        Add Review
+      </Button>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Add Review</DialogTitle>
+        </DialogHeader>
+        <div className="flex flex-col gap-4">
+          {error && <p className="error text-red-500">Error : {error}</p>}
+
+          <div className="flex justify-start items-center gap-3">
+            <p>Rate </p>
+            <Ratings
+              value={rating}
+              variant="destructive"
+              size={20}
+              asInput={true}
+              onValueChange={setRating}
+            />
+          </div>
+          <div className="grid w-full gap-1.5">
+            <Label htmlFor="message">Review</Label>
+            <Textarea
+              placeholder="Write your review..."
+              id="message"
+              value={review}
+              onChange={(e) => setReview(e.target.value)}
+            />
+          </div>
+        </div>
+        <DialogFooter>
+          <ButtonWithLoading loading={loading} onClick={handleAddReview}>
+            Save changes
+          </ButtonWithLoading>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
 
 export function TabsDemo({
-  course,
   chapter,
+  course,
 }: {
   course?: ICourse;
   chapter?: IChapter;
@@ -27,8 +117,12 @@ export function TabsDemo({
         </div>
       </TabsContent>
       <TabsContent value="note">
-        <div className="border p-2 m-2 rounded-md">
-          <Viewer content={chapter?.notes[0]?.title ?? ""} />
+        <div className="p-2 m-2 flex flex-col">
+          <NoteView
+            course={course as ICourse}
+            chapter={chapter as IChapter}
+            key={chapter?.id}
+          />
         </div>
       </TabsContent>
     </Tabs>

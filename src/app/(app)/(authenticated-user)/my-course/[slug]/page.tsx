@@ -3,14 +3,13 @@
 import { getCourseByIdUser } from "@/actions/course/course.action";
 import Loader from "@/components/loader";
 
-import { Button } from "@/components/ui/button";
-import useUpdateEffect from "@/hooks/useUpdateHook";
 import { useUserContext } from "@/providers/AuthUserProvider";
 import { ICourse } from "@/types/course.type";
 import { IUser } from "@/types/user/user.type";
 import { usePathname } from "next/navigation";
 import { useLayoutEffect, useMemo, useState } from "react";
 import {
+  AddReview,
   ListChapter,
   SheetDemo,
   TabsDemo,
@@ -25,10 +24,10 @@ export default function Page({
 }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [activeChapter, setActiveChapter] = useState<number | undefined>(
-    Number(searchParams?.activeChapter) ?? undefined
-  );
   const [course, setCourse] = useState<null | ICourse>(null);
+  const [activeChapter, setActiveChapter] = useState<number | undefined>(
+    course?.chapters[0].id
+  );
   const { user }: { user: IUser } = useUserContext();
   const pathname = usePathname();
 
@@ -55,15 +54,15 @@ export default function Page({
     getCourse();
   }, []);
 
-  useUpdateEffect(() => {
-    setTimeout(() => {
-      window.history.replaceState(
-        null,
-        "",
-        `${pathname}?activeChapter=${activeChapter}`
-      );
-    }, 1000);
-  }, [activeChapter]);
+  // useUpdateEffect(() => {
+  //   setTimeout(() => {
+  //     window.history.replaceState(
+  //       null,
+  //       "",
+  //       `${pathname}?activeChapter=${activeChapter}`
+  //     );
+  //   }, 1000);
+  // }, [activeChapter]);
 
   const userEnrollment = useMemo(
     () => course?.enrollments?.find((e) => e.userId === user.id),
@@ -77,14 +76,7 @@ export default function Page({
 
   if (loading || error || !course) {
     return (
-      <div
-        className="flex-1 flex justify-center items-center"
-        onClick={async () => {
-          console.log("thichoe");
-          const response = await getCourseByIdUser(params.slug);
-          console.log(response);
-        }}
-      >
+      <div className="flex-1 flex justify-center items-center">
         <Loader />
       </div>
     );
@@ -100,11 +92,7 @@ export default function Page({
           <div className="col-span-12 md:col-span-9 flex flex-col gap-2">
             <div className="mt-2 mx-2 flex justify-between items-center">
               <h1 className="text-xl font-semibold ">{course?.title} </h1>
-              {userEnrollment?.rating ? (
-                ""
-              ) : (
-                <Button size={"xs"}>Add Review</Button>
-              )}
+              {userEnrollment?.rating ? "" : <AddReview course={course} />}
             </div>
 
             <div className="min-h-[240px]">

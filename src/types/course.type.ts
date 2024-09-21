@@ -37,11 +37,12 @@ export interface IChapter {
 }
 
 export interface INote {
-  title?: string;
-
-  userId?: number;
-
-  chapterId?: number;
-
-  content?: string;
+  id: number;
+  title: string;
+  userId: number;
+  chapterId: number;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt?: string | null;
 }

@@ -1,4 +1,4 @@
-import { listCourseActionUser } from "@/actions/course/course.action";
+import { listRecommendedCourseActionUser } from "@/actions/course/course.action";
 import CourseCard from "@/components/app/course-card";
 import { Container } from "@/components/container";
 import Loader from "@/components/loader";
@@ -15,7 +15,7 @@ import { Suspense } from "react";
 
 export default async function AppPage() {
   console.log(cookies().get("accessToken")?.value);
-  const courses = listCourseActionUser({});
+  const courses = listRecommendedCourseActionUser({});
   return (
     <div className="flex flex-col gap-6 p-6">
       <Container>

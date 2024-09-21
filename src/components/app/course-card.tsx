@@ -1,7 +1,7 @@
 "use client";
 import { ICourse } from "@/types/course.type";
 import Image from "next/image";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Button } from "../ui/button";
 import Ratings from "./rating";
 import Link from "next/link";
@@ -9,7 +9,10 @@ import Link from "next/link";
 type Props = { course: ICourse; href?: string };
 
 export default function CourseCard({ course, href }: Props) {
-  const [rating, setRating] = useState(3);
+  const ratingCount: number = useMemo(
+    () => course.enrollments.filter((e) => typeof e.rating === "number").length,
+    [course]
+  );
   return (
     <Link href={href ?? `course/${course.id}`} className="flex flex-col gap-2">
       <div className="img">
@@ -31,9 +34,8 @@ export default function CourseCard({ course, href }: Props) {
             variant="destructive"
             size={13}
             asInput={true}
-            onValueChange={setRating}
           />
-          <p className="text-muted-foreground">(1245)</p>
+          <p className="text-muted-foreground">({ratingCount})</p>
         </div>
         <h3 className=" text-primary text-sm">Rs {course.price}</h3>
         <div>
