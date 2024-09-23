@@ -1,4 +1,4 @@
-import { listCourseEnrolledActionUser, listRecommendedCourseActionUser } from "@/actions/course/course.action";
+import { listCourseEnrolledActionUser } from "@/actions/course/course.action";
 import CourseCard from "@/components/app/course-card";
 import { Container } from "@/components/container";
 import Loader from "@/components/loader";

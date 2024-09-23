@@ -5,7 +5,6 @@ export async function fetchProxy<T>(
   url: string,
   options?: RequestInit
 ): Promise<T> {
-  console.log("🚀 ~ url:", url);
   try {
     const headers = {
       "Content-type": "application/json",

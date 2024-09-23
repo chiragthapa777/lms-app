@@ -10,7 +10,8 @@ type Props = { course: ICourse; href?: string };
 
 export default function CourseCard({ course, href }: Props) {
   const ratingCount: number = useMemo(
-    () => course.enrollments.filter((e) => typeof e.rating === "number").length,
+    () =>
+      course.enrollments?.filter((e) => typeof e.rating === "number").length,
     [course]
   );
   return (

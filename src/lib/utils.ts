@@ -12,7 +12,7 @@ export function handleErrorInAction(error: any): IActionResponse {
   if (error instanceof Error) {
     return {
       error: {
-        message: error.message,
+        message: error?.message,
         errors: [],
         statusCode: 400,
       },

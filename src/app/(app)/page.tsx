@@ -14,7 +14,7 @@ import { cookies } from "next/headers";
 import { Suspense } from "react";
 
 export default async function AppPage() {
-  cookies().get("test");
+  console.log(cookies().get("")?.value)
   const courses = listRecommendedCourseActionUser({});
   return (
     <div className="flex flex-col gap-6 p-6">
@@ -60,7 +60,7 @@ export default async function AppPage() {
         <Suspense fallback={<Loader className=" rounded-lg min-h-32" />}>
           {courses.then((response) => {
             if (response.error) {
-              throw new Error(response.error?.message);
+              // throw new Error(response.error?.message);
             }
             const courses = response.data?.data ?? [];
             return (
