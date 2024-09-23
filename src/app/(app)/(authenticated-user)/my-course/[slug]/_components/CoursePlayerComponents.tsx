@@ -139,7 +139,7 @@ export function SheetDemo(props: {
       <SheetTrigger asChild>
         <Button
           variant="default"
-          className="absolute bottom-10 right-10  rounded-full drop-shadow-md flex justify-center items-center h-[50px] w-[50px] md:hidden"
+          className="fixed bottom-10 right-10  rounded-full drop-shadow-md flex justify-center items-center h-[50px] w-[50px] md:hidden z-50"
         >
           <ListVideo />
         </Button>
@@ -174,7 +174,7 @@ export function ListChapter(props: {
             key={chapter.id}
             className={`border rounded-md p-2 flex justify-start items-center gap-2 cursor-pointer  ${
               props.activeChapter === chapter.id
-                ? "bg-slate-100 drop-shadow-md"
+                ? "bg-slate-100 drop-shadow-sm"
                 : "hover:drop-shadow-sm hover:bg-slate-50"
             }`}
             onClick={() => {

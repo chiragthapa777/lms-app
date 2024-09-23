@@ -16,13 +16,13 @@ export default function CourseCard({ course, href }: Props) {
   );
   return (
     <Link href={href ?? `course/${course.id}`} className="flex flex-col gap-2">
-      <div className="img">
+      <div className="aspect-square">
         <Image
           src={course.photoLink}
           alt="Picture of the author"
-          width={500}
-          height={500}
-          className="h-40 object-scale-down border"
+          width={1000}
+          height={1000}
+          className=" object-scale-down border h-full w-full"
         />
       </div>
       <div className="content flex flex-col gap-1">

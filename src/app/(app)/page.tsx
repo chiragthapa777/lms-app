@@ -1,5 +1,6 @@
 import { listRecommendedCourseActionUser } from "@/actions/course/course.action";
 import CourseCard from "@/components/app/course-card";
+import HeroCarousel from "@/components/app/HeroCarousel";
 import { Container } from "@/components/container";
 import Loader from "@/components/loader";
 import {
@@ -14,44 +15,12 @@ import { cookies } from "next/headers";
 import { Suspense } from "react";
 
 export default async function AppPage() {
-  console.log(cookies().get("")?.value)
+  console.log(cookies().get("")?.value);
   const courses = listRecommendedCourseActionUser({});
   return (
     <div className="flex flex-col gap-6 p-6">
       <Container>
-        <Carousel className="w-[100%] sm:w-[80%] mx-auto">
-          <CarouselContent>
-            <CarouselItem>
-              <div className="p-1 ">
-                <img
-                  src="/web-banner.jpg"
-                  className="w-full h-full object-cover border"
-                  alt=""
-                />
-              </div>
-            </CarouselItem>
-            <CarouselItem>
-              <div className="p-1 ">
-                <img
-                  src="/node-banner.jpg"
-                  className="w-full h-full object-cover border"
-                  alt=""
-                />
-              </div>
-            </CarouselItem>
-            <CarouselItem>
-              <div className="p-1 ">
-                <img
-                  src="/react-banner.jpg"
-                  className="w-full h-full object-cover border"
-                  alt=""
-                />
-              </div>
-            </CarouselItem>
-          </CarouselContent>
-          <CarouselPrevious className="hidden sm:block" />
-          <CarouselNext className="hidden sm:block" />
-        </Carousel>
+        <HeroCarousel />
       </Container>
       <Container className="flex flex-col gap-4">
         <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">

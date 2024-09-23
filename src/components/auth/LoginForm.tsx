@@ -2,7 +2,7 @@
 import Link from "next/link";
 
 import { loginAction } from "@/actions/auth/auth.action";
-import { Button } from "@/components/ui/button";
+import { ButtonWithLoading } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -36,6 +36,7 @@ const loginSchema = z.object({
 
 export function LoginForm() {
   const [error, setError] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
   const { loadUser } = useUserContext();
   const router = useRouter();
   const query = useSearchParams();
@@ -49,6 +50,7 @@ export function LoginForm() {
 
   async function onSubmit(values: z.infer<typeof loginSchema>) {
     setError("");
+    setLoading(true);
     const response = await loginAction(values);
     if (response.data) {
       toast.success("Login successful");
@@ -63,6 +65,7 @@ export function LoginForm() {
       setError(response?.error?.message ?? "");
       toast.error(response.error?.message);
     }
+    setLoading(false);
   }
   return (
     <Card className="mx-auto max-w-sm">
@@ -102,9 +105,13 @@ export function LoginForm() {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full">
-              Submit
-            </Button>
+            <ButtonWithLoading
+              type="submit"
+              className="w-full"
+              loading={loading}
+            >
+              Login
+            </ButtonWithLoading>
           </form>
         </Form>
         <div className="mt-4 text-center text-sm">
