@@ -1,14 +1,11 @@
 import { cn } from "@/lib/utils";
 import { ICourse } from "@/types/course.type";
-import Ratings from "../app/rating";
 import { containerProps } from "../container";
-import moment from "moment";
-import Image from "next/image";
-import { Button } from "../ui/button";
 import Viewer from "../rich-text/viewer";
 import { CourseChapterAccordion } from "./CourseChapterAccordion";
-import CourseReview from "./CourseReview";
 import CourseDescription from "./CourseDescription";
+import CourseReview from "./CourseReview";
+import { useMemo } from "react";
 
 type Props = {
   course: ICourse;
@@ -27,6 +24,10 @@ export function CourseContainer({
 }
 
 export default function CoursePage({ course }: Props) {
+  const reviews = useMemo(
+    () => course.enrollments.filter((e) => e.review),
+    [course]
+  );
   return (
     <div className="flex flex-col gap-4">
       <section className="info bg-slate-800 p-4 text-white">
@@ -54,12 +55,16 @@ export default function CoursePage({ course }: Props) {
         <h3 className="text-xl font-bold">Reviews</h3>
       </CourseContainer>
       <section className="reviews">
-        <CourseContainer className="p-4 border rounded-md">
-          {course.enrollments
-            .filter((e) => e.review)
-            .map((e) => (
-              <CourseReview review={e} key={e.id} />
-            ))}
+        <CourseContainer className="p-4 border rounded-md flex flex-col gap-2">
+          {reviews.length > 0 ? (
+            reviews
+              .filter((e) => e.review)
+              .map((e) => <CourseReview review={e} key={e.id} />)
+          ) : (
+            <div className="p-4 text-center">
+              <p>No reviews yet</p>
+            </div>
+          )}
         </CourseContainer>
       </section>
     </div>

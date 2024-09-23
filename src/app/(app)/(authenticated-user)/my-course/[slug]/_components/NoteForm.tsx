@@ -34,7 +34,7 @@ export default function NoteForm({ note, chapterId, onComplete }: Props) {
     mode: "all",
     defaultValues: {
       title: undefined,
-      content: undefined,
+      content: note?.content ?? undefined,
       chapterId,
     },
   });

@@ -74,13 +74,15 @@ export default function NoteCard({ note, triggerFetch }: Props) {
             switch (name) {
               case "EDIT": {
                 setOpenEdit(true);
+                return;
               }
-              case "DELETE":{
-                deleteNoteAction(note.id).then(()=>{
-                  triggerFetch()
-                  toast.success("Note deleted")
-                })
-                toast.info("Note in progress")
+              case "DELETE": {
+                deleteNoteAction(note.id).then(() => {
+                  triggerFetch();
+                  toast.success("Note deleted");
+                });
+                toast.info("Note deletion in progress");
+                return;
               }
             }
           }}

@@ -50,7 +50,6 @@ const RichTextEditor = ({
             class: "list-disc pl-4",
           },
         },
-
       }),
     ],
     content: value, // Set the initial content with the provided value

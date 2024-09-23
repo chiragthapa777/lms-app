@@ -42,7 +42,7 @@ export default function CourseForm({ course }: Props) {
     mode: "all",
     defaultValues: {
       title: undefined,
-      description: undefined,
+      description: course?.description ?? undefined,
       photoLink: undefined,
       category: undefined,
       price: 0,

@@ -6,12 +6,23 @@ import { Button } from "../ui/button";
 import Ratings from "./rating";
 import Link from "next/link";
 
-type Props = { course: ICourse; href?: string };
+type Props = {
+  course: ICourse;
+  href?: string;
+  buttonText?: string;
+  hideRating?: boolean;
+  hidePrice?: boolean;
+};
 
-export default function CourseCard({ course, href }: Props) {
+export default function CourseCard({
+  course,
+  href,
+  buttonText,
+  hidePrice,
+  hideRating,
+}: Props) {
   const ratingCount: number = useMemo(
-    () =>
-      course.enrollments?.filter((e) => typeof e.rating === "number").length,
+    () => course.enrollments?.filter((e) => e.rating).length,
     [course]
   );
   return (
@@ -28,20 +39,24 @@ export default function CourseCard({ course, href }: Props) {
       <div className="content flex flex-col gap-1">
         <h3 className=" text-primary text-sm">{course.title}</h3>
         <div className="text-sm text-muted-foreground">{course.category}</div>
-        <div className="flex text-xs gap-1">
-          <p>{course.rating}</p>
-          <Ratings
-            value={course.rating}
-            variant="destructive"
-            size={13}
-            asInput={true}
-          />
-          <p className="text-muted-foreground">({ratingCount})</p>
-        </div>
-        <h3 className=" text-primary text-sm">Rs {course.price}</h3>
+        {!hideRating && (
+          <div className="flex text-xs gap-1 items-center ">
+            <p className="mt-1">{course.rating}</p>
+            <Ratings
+              value={course.rating}
+              variant="destructive"
+              size={13}
+              asInput={true}
+            />
+            <p className="text-muted-foreground mt-1">({ratingCount})</p>
+          </div>
+        )}
+        {!hidePrice && (
+          <h3 className=" text-primary text-sm">Rs {course.price}</h3>
+        )}
         <div>
           <Button variant={"outline"} size={"sm"} className="w-full">
-            Enroll
+            {buttonText ?? "Enroll"}
           </Button>
         </div>
       </div>

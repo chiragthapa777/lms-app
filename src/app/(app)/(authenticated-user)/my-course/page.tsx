@@ -25,6 +25,9 @@ export default function page({}: Props) {
                     course={course}
                     key={course.id}
                     href={`/my-course/${course.id}`}
+                    buttonText="View Course"
+                    hidePrice={true}
+                    hideRating={true}
                   />
                 ))}
               </div>
