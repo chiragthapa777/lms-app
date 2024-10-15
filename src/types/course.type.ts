@@ -34,6 +34,7 @@ export interface IChapter {
   updatedAt: string;
   deletedAt?: string | null;
   notes: INote[];
+  views?: { completed: boolean }[];
 }
 
 export interface INote {

@@ -1,10 +1,11 @@
 "use client";
 import { ICourse } from "@/types/course.type";
 import Image from "next/image";
-import { useMemo, useState } from "react";
-import { Button } from "../ui/button";
-import Ratings from "./rating";
 import Link from "next/link";
+import { useMemo } from "react";
+import { Button } from "../ui/button";
+import { Progress } from "../ui/progress";
+import Ratings from "./rating";
 
 type Props = {
   course: ICourse;
@@ -12,6 +13,7 @@ type Props = {
   buttonText?: string;
   hideRating?: boolean;
   hidePrice?: boolean;
+  showProgress?: boolean;
 };
 
 export default function CourseCard({
@@ -20,11 +22,22 @@ export default function CourseCard({
   buttonText,
   hidePrice,
   hideRating,
+  showProgress,
 }: Props) {
   const ratingCount: number = useMemo(
     () => course.enrollments?.filter((e) => e.rating).length,
     [course]
   );
+
+  const progress: number = useMemo(() => {
+    if (!showProgress) return 0;
+    const totalCourse = course.chapters.length;
+    const totalCompleted = course.chapters.filter(
+      (c) => c.views && c.views[0] && c.views[0].completed
+    ).length;
+    return (totalCompleted / totalCourse) * 100;
+  }, [course, showProgress]);
+
   return (
     <Link href={href ?? `course/${course.id}`} className="flex flex-col gap-2">
       <div className="aspect-square">
@@ -36,6 +49,11 @@ export default function CourseCard({
           className=" object-scale-down border h-full w-full"
         />
       </div>
+      {showProgress === true && (
+        <div className="flex flex-col">
+          <Progress value={progress} className="w-[100%]" />
+        </div>
+      )}
       <div className="content flex flex-col gap-1">
         <h3 className=" text-primary text-sm">{course.title}</h3>
         <div className="text-sm text-muted-foreground">{course.category}</div>

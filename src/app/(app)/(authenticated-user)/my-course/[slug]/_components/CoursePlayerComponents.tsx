@@ -4,8 +4,12 @@ import Viewer from "@/components/rich-text/viewer";
 import { Button, ButtonWithLoading } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
-import { rateByUserAction } from "@/actions/enrollment/user.action";
+import {
+  rateByUserAction,
+  toggleCompletedByUserAction,
+} from "@/actions/enrollment/user.action";
 import Ratings from "@/components/app/rating";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -18,7 +22,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { useUserContext } from "@/providers/AuthUserProvider";
 import { IChapter, ICourse } from "@/types/course.type";
-import { ListVideo, Play } from "lucide-react";
+import { ListVideo } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import NoteView from "./NoteView";
@@ -162,6 +166,16 @@ export function ListChapter(props: {
   setActiveChapter: React.Dispatch<React.SetStateAction<number | undefined>>;
   activeChapter?: number;
 }) {
+  const toggleCompleted = async (completed: boolean, chapterId: number) => {
+    const response = await toggleCompletedByUserAction(completed, chapterId);
+    if (response.error) {
+      throw new Error(response.error.message);
+    }
+    toast.success(
+      `Chapter marked as ${completed ? "completed" : "not completed"}.`
+    );
+  };
+
   return (
     <>
       {" "}
@@ -181,7 +195,14 @@ export function ListChapter(props: {
               props.setActiveChapter(chapter.id);
             }}
           >
-            {props.activeChapter === chapter?.id && <Play size={20} />}
+            <Checkbox
+              defaultChecked={
+                chapter?.views ? chapter.views[0]?.completed : false
+              }
+              onCheckedChange={(checked: boolean) => {
+                toggleCompleted(checked, chapter.id);
+              }}
+            />
             <p>{chapter.title}</p>
           </div>
         ))}

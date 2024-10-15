@@ -45,3 +45,24 @@ export const rateByUserAction = async (
     return handleErrorInAction(error);
   }
 };
+
+export const toggleCompletedByUserAction = async (
+  completed: boolean,
+  chapterId: number
+): Promise<IActionResponse<IResponse<IUser>>> => {
+  try {
+    const response = await fetchProxy<IResponse<IUser>>(
+      resourceUrl + "/course/view/" + chapterId.toString(),
+      {
+        method: "PATCH",
+        body: JSON.stringify({
+          completed,
+        }),
+      }
+    );
+
+    return { data: response };
+  } catch (error) {
+    return handleErrorInAction(error);
+  }
+};

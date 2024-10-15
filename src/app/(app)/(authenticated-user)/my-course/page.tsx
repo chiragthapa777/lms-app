@@ -28,6 +28,7 @@ export default function page({}: Props) {
                     buttonText="View Course"
                     hidePrice={true}
                     hideRating={true}
+                    showProgress={true}
                   />
                 ))}
               </div>
